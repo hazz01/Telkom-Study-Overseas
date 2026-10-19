@@ -13,7 +13,11 @@ function closeContents() {
 function showPage() {
   const id = location.hash.slice(1) || 'sampul';
   const index = pages.findIndex(page => page.id === id);
+  const previousPage = current;
   current = index < 0 ? 0 : index;
+  if (pages[current].id === 'pilihan-orang-tua' && previousPage !== current) {
+    showRouteNotice();
+  }
   pages.forEach((page, i) => { page.hidden = i !== current; });
   main.scrollTop = 0;
   previous.disabled = current === 0;
@@ -21,7 +25,7 @@ function showPage() {
   document.querySelector('#page-label').textContent = pages[current].dataset.title;
   document.querySelector('#page-count').textContent = `${String(current + 1).padStart(2, '0')} / ${pages.length}`;
   document.title = `${pages[current].dataset.title} — Study Overseas SMK Telkom Malang`;
-  document.querySelectorAll('.primary-nav a, .contents a').forEach(link => {
+  document.querySelectorAll('.primary-nav a, .contents a, .parent-nav-mobile').forEach(link => {
     if (link.hash === `#${pages[current].id}`) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
@@ -35,7 +39,7 @@ next.addEventListener('click', () => goTo(current + 1));
 window.addEventListener('hashchange', () => {
   if (location.hash === '#main') { main.focus(); return; }
   showPage();
-  pages[current].querySelector('h1, h2').focus({preventScroll: true});
+  if (!routeNotice.open) pages[current].querySelector('h1, h2').focus({preventScroll: true});
 });
 contentsButton.addEventListener('click', () => {
   const open = contents.hidden;
@@ -77,6 +81,21 @@ document.querySelectorAll('.faq-list details').forEach(item => item.addEventList
   if (item.open) document.querySelectorAll('.faq-list details').forEach(other => { if (other !== item) other.open = false; });
 }));
 
+const routeNotice = document.querySelector('#route-notice');
+const routeNoticeOk = document.querySelector('#route-notice-ok');
+let afterNoticeConfirm = null;
+function showRouteNotice(afterConfirm = null) {
+  afterNoticeConfirm = afterConfirm;
+  routeNotice.showModal();
+}
+routeNoticeOk.addEventListener('click', () => {
+  const action = afterNoticeConfirm;
+  afterNoticeConfirm = null;
+  routeNotice.close();
+  if (action) action();
+});
+routeNotice.addEventListener('cancel', () => { afterNoticeConfirm = null; });
+
 const parentForm = document.querySelector('#parent-form');
 const formStatus = document.querySelector('#form-status');
 const submissionFrame = document.querySelector('.submission-frame');
@@ -94,8 +113,10 @@ parentForm.addEventListener('submit', event => {
     parentForm.reportValidity();
     return;
   }
-  formStatus.textContent = 'Menyimpan pilihan Anda...';
-  submissionPending = true;
-  HTMLFormElement.prototype.submit.call(parentForm);
+  showRouteNotice(() => {
+    formStatus.textContent = 'Menyimpan pilihan Anda...';
+    submissionPending = true;
+    HTMLFormElement.prototype.submit.call(parentForm);
+  });
 });
 showPage();
