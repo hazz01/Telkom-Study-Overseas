@@ -83,18 +83,10 @@ document.querySelectorAll('.faq-list details').forEach(item => item.addEventList
 
 const routeNotice = document.querySelector('#route-notice');
 const routeNoticeOk = document.querySelector('#route-notice-ok');
-let afterNoticeConfirm = null;
-function showRouteNotice(afterConfirm = null) {
-  afterNoticeConfirm = afterConfirm;
+function showRouteNotice() {
   routeNotice.showModal();
 }
-routeNoticeOk.addEventListener('click', () => {
-  const action = afterNoticeConfirm;
-  afterNoticeConfirm = null;
-  routeNotice.close();
-  if (action) action();
-});
-routeNotice.addEventListener('cancel', () => { afterNoticeConfirm = null; });
+routeNoticeOk.addEventListener('click', () => routeNotice.close());
 
 const parentForm = document.querySelector('#parent-form');
 const formStatus = document.querySelector('#form-status');
@@ -113,10 +105,8 @@ parentForm.addEventListener('submit', event => {
     parentForm.reportValidity();
     return;
   }
-  showRouteNotice(() => {
-    formStatus.textContent = 'Menyimpan pilihan Anda...';
-    submissionPending = true;
-    HTMLFormElement.prototype.submit.call(parentForm);
-  });
+  formStatus.textContent = 'Menyimpan pilihan Anda...';
+  submissionPending = true;
+  HTMLFormElement.prototype.submit.call(parentForm);
 });
 showPage();

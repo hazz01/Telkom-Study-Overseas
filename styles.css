@@ -34,3 +34,16 @@ main{min-height:0;overflow-y:auto;scrollbar-gutter:stable}.page{width:min(1160px
 .price-table td:nth-child(2){font-size:18px;font-weight:700;color:var(--ink)}.price-table tbody tr:first-child td:nth-child(2){font-size:20px;color:#ae3030}.price-note{max-width:850px}.parent-intro{max-width:800px;margin-top:0;margin-bottom:28px}.notice-dialog{width:min(460px,calc(100% - 32px));padding:0;border:1px solid var(--line);border-top:4px solid var(--red);border-radius:4px;background:white;color:var(--ink);box-shadow:0 8px 24px #0002}.notice-dialog::backdrop{background:rgba(35,35,35,.48)}.notice-dialog-content{padding:28px 32px 24px}.notice-dialog h2{font-size:22px;margin-bottom:12px}.notice-dialog p{font-size:16px;line-height:1.65;margin-bottom:24px;color:var(--gray)}.notice-dialog .button{min-width:88px}.notice-dialog:focus{outline:none}@media(max-width:700px){.price-table td:nth-child(2){font-size:16px}.price-table tbody tr:first-child td:nth-child(2){font-size:18px}.notice-dialog-content{padding:24px 22px 20px}.notice-dialog h2{font-size:20px}}
 
 .primary-nav a.parent-nav-link{color:#ae3030;font-weight:700;text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px}.parent-nav-mobile{display:none;color:#ae3030;font-weight:700;text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px}@media(max-width:700px){.parent-nav-mobile{display:inline-flex;align-items:center;min-height:40px;font-size:12px;white-space:nowrap}}@media(max-width:400px){.parent-nav-mobile{font-size:11px}}
+
+/* Foto latar tipis memberi konteks tanpa mengambil fokus dari isi halaman. */
+#destinasi,#pengantar,#belajar,#hasil,#kunjungan,#pertanyaan{position:relative;isolation:isolate}
+#destinasi::before,#pengantar::before,#belajar::before,#hasil::before,#kunjungan::before,#pertanyaan::before{content:"";position:absolute;z-index:-1;top:5%;right:0;width:min(46%,560px);height:190px;background-position:center 45%;background-size:cover;background-repeat:no-repeat;opacity:.1;mask-image:linear-gradient(90deg,transparent 0%,#000 45%);pointer-events:none}
+#destinasi::before{background-image:url("assets/web-malaysia-landmark.jpg")}
+#pengantar::before{background-image:url("assets/web-campus.jpg")}
+#belajar::before{background-image:url("assets/web-gardens.jpg")}
+#hasil::before{background-image:url("assets/community.jpg")}
+#kunjungan::before{background-image:url("assets/web-singapore-landmark.jpg")}
+#pertanyaan::before{background-image:url("assets/web-campus.jpg")}
+@media(max-width:700px){#destinasi::before,#pengantar::before,#belajar::before,#hasil::before,#kunjungan::before,#pertanyaan::before{top:0;width:58%;height:140px;opacity:.08}}
+
+.route-panel-layout{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:28px;align-items:start;padding-top:24px}.route-visual{margin:0}.route-visual img{width:100%;height:190px;object-fit:cover;object-position:center}.route-panel-layout .route-days{margin-top:0}@media(max-width:700px){.route-panel-layout{grid-template-columns:1fr;gap:18px;padding-top:18px}.route-visual img{height:180px}}
